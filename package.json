@@ -1,0 +1,17 @@
+{
+  "name": "rightflat",
+  "version": "1.0.0",
+  "repository": "https://github.com/michaeldfallen/rightflat.git",
+  "description": "A webscraper to pull rightmove listings and email them to me every hour",
+  "main": "scrape.js",
+  "author": "Michael Allen (michaelallen.io)",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^0.18.0",
+    "promised-io": "^0.3.4",
+    "request": "^2.49.0"
+  },
+  "devDependencies": {
+    "supervisor": "^0.6.0"
+  }
+}
