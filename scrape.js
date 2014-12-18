@@ -1,4 +1,4 @@
-var rightmove = require('./app/rightmove.js');
+var rightflat = require('./app/rightflat.js');
 
-rightmove.search();
+rightflat.search();
 

@@ -1,25 +1,8 @@
-var Request = require('request');
 var Promise = require('promised-io/promise');
-var Scraper = require('./scraper.js')
-
-var orReturnEmpty = function (error) {
-  console.log('an error occurred ' + error);
-  return [];
-};
+var Scraper = require('./scraper.js');
+var Fetcher = require('./fetcher.js');
 
 var Rightmove = module.exports = {
-  search: function() {
-    Rightmove.forEachStation(function (station, url) {
-      console.log('Searching ' + station.n + ' on Rightmove');
-
-      var flatsFound = Promise.whenPromise(url)
-        .then(Rightmove.fetch)
-        .then(Scraper.scrape, orReturnEmpty)
-        .then(console.log);
-
-      return '';
-    });
-  },
   forEachStation: function (block) {
     var base = 'http://www.rightmove.co.uk/property-to-rent/find.html';
     var settings = '&maxDaysSinceAdded=1'
@@ -34,17 +17,6 @@ var Rightmove = module.exports = {
       var url = base + '?locationIdentifier=STATION^' + station.id + settings;
       return block(station, url);
     });
-  },
-  fetch: function (url) {
-    var deferred = new Promise.Deferred();
-    Request(url, function (error, response, body) {
-      if (!error && response.statusCode == 200) {
-        deferred.resolve(body);
-      } else {
-        deferred.reject(error);
-      }
-    });
-    return deferred;
   },
   maxPrice: '1400',
   minPrice: '1100',

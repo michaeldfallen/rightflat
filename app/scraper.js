@@ -5,6 +5,10 @@ var cleanString = function (str) {
 }
 
 var Scraper = module.exports = {
+  orReturnEmpty: function (error) {
+    console.log('an error occurred ' + error);
+    return [];
+  },
   scrape: function (html) {
     var $ = Cheerio.load(html);
     var flatList = $('li.summary-list-item');
