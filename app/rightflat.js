@@ -3,15 +3,20 @@ var Fetcher = require('./fetcher.js');
 var Scraper = require('./scraper.js');
 var Promise = require('promised-io/promise');
 
+var print = function(station) {
+  return function(flats) {
+    console.log('Found ' + flats.length + ' flats in ' + station.n);
+    console.log(flats);
+  };
+};
+
 module.exports = {
   search: function() {
     Rightmove.forEachStation(function (station, url) {
-      console.log('Searching ' + station.n + ' on Rightmove');
-
       var flatsFound = Promise.whenPromise(url)
         .then(Fetcher.fetch)
         .then(Scraper.scrape, Scraper.orReturnEmpty)
-        .then(console.log);
+        .then(print(station));
 
       return '';
     });

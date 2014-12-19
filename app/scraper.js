@@ -16,12 +16,12 @@ var Scraper = module.exports = {
       var address = $('span.displayaddress strong', flat).text();
       var photo = $('img', flat).attr('src');
       var price = $('div.price-new a', flat).first().text();
-      var link = $('a.more-details', flat).attr('href');
+      var link = $('div.price-new a', flat).attr('href');
       return {
         'address' : cleanString(address),
         'photo' : photo,
         'price' : cleanString(price),
-        'link' : link
+        'link' : 'http://www.rightmove.co.uk' + link
       };
     }).get();
     return flats;
