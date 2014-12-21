@@ -12,13 +12,38 @@ var print = function(station) {
 
 module.exports = {
   search: function() {
-    Rightmove.forEachStation(function (station, url) {
+    var results = Rightmove.forEachStation(function (station, url) {
+      var deferred = new Promise.Deferred();
       var flatsFound = Promise.whenPromise(url)
         .then(Fetcher.fetch)
         .then(Scraper.scrape, Scraper.orReturnEmpty)
-        .then(print(station));
+        .then(function (flats) {
+          deferred.resolve({
+            'flats': flats,
+            'station': station
+          });
+        }, function (err) {
+          deferred.resolve({
+            'flats': [],
+            'station': station
+          });
+        });
 
-      return '';
+      return deferred.promise;
     });
+  },
+  deduplicateResults: function (resultsPromises) {
+    var flatSetDeferred = new Promise.Deferred();
+    var flatSet = {};
+    resultsPromises.map(function (stationFlatsPromise) {
+      stationFlatsPromise.then(function (stationFlats) {
+        stationFlats.flats.map(function (flat) {
+          //Add the flat to the flatSet
+          //Add the station to the flats station array
+          //Might need to check if it exists first
+        });
+      });
+    });
+    return flatSetDeferred.promise;
   }
 };
