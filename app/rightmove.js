@@ -1,4 +1,3 @@
-var Promise = require('promised-io/promise');
 var Scraper = require('./scraper.js');
 var Fetcher = require('./fetcher.js');
 

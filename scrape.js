@@ -1,4 +1,5 @@
 var rightflat = require('./app/rightflat.js');
 
-rightflat.search();
 
+var results = rightflat.search()
+var cleanResults = rightflat.deduplicateResults(results);
