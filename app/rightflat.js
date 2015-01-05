@@ -1,6 +1,7 @@
 var Rightmove = require('./rightmove.js');
 var Fetcher = require('./fetcher.js');
 var Scraper = require('./scraper.js');
+var Cache = require('./cache.js').init();
 var Promise = require('promised-io/promise');
 
 var print = function(message) {
@@ -32,7 +33,7 @@ module.exports = {
       return deferred.promise;
     });
   },
-  deduplicateResults: function (resultsPromises) {
+  deduplicateAndFilter: function (resultsPromises) {
     var flatSetDeferred = new Promise.Deferred();
     var flatSet = {};
     var dedupPromises = resultsPromises.map(function (mightBePromise) {
@@ -40,19 +41,25 @@ module.exports = {
 
       stationFlatsPromise.then(function (stationFlats) {
         stationFlats.flats.map(function (flat) {
-          var resultRef = flatSet[flat.link] = flatSet[flat.link] || { flat: {}, stations: [] };
+          var seenit = Cache.exists(flat.link);
+          if (seenit == false) {
+            var resultRef = flatSet[flat.link] = flatSet[flat.link] || { flat: {}, stations: [] };
 
-          resultRef.flat = flat;
-          resultRef.stations.push(stationFlats.station.n);
+            resultRef.flat = flat;
+            resultRef.stations.push(stationFlats.station.n);
+          }
         });
       });
       return stationFlatsPromise;
     });
 
     Promise.all(dedupPromises).then(function () {
+      for(key in flatSet) {
+        Cache.insert(key);
+      }
       flatSetDeferred.resolve(flatSet);
+      Cache.write();
     });
-    flatSetDeferred.then(print('deduplicated results'));
     return flatSetDeferred.promise;
   }
 };
