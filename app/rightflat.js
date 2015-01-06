@@ -68,7 +68,8 @@ module.exports = {
       .whenPromise(maybePromise)
       .then(function (results) {
         var flatsFound = Object.keys(results).length;
-        var html = "Found <i>" + flatsFound + "</i> flats" + "<br/>";
+        var subject = 'Found ' + flatsFound + ' flats';
+        var html = '';
         for (key in results) {
           var result = results[key];
           var nearTubes = result.stations.reduce(function(previousValue, currentValue) {
@@ -84,8 +85,9 @@ module.exports = {
             '<img src="' + result.flat.photo + '" width="100%">' +
             '</a>'
         }
+        console.log(subject);
         if (flatsFound > 0) {
-          Emailer.send(html);
+          Emailer.send(subject, html);
         }
       });
   }

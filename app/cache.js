@@ -23,7 +23,6 @@ var Cache = module.exports = {
       JSON.stringify(Cache.items),
       function (err) {
         if (err) throw err;
-        console.log('It\'s saved!');
       }
     );
   }
