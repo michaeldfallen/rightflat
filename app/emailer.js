@@ -13,7 +13,7 @@ var transporter = nodemailer.createTransport({
 var mailOptions = function (subject, html) {
   return {
     from: 'Rightflat Scraper <rightflat@michaelallen.io>',
-    to: 'Michael <michaeldfallen@gmail.com>',
+    to: 'Michael <michaeldfallen@gmail.com>, Mags <mgrsavage@gmail.com>',
     subject: subject,
     html: html
   };
