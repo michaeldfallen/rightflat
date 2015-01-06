@@ -30,7 +30,7 @@ module.exports = {
             'station': station
           });
         });
-      
+
       return deferred.promise;
     });
   },
